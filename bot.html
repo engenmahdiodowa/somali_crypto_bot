@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Somali Crypto Bot Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Somali Crypto Bot</h1>
+    <p id="user-info">Loading user info...</p>
+    <div class="actions">
+      <button onclick="getPrice()">Check SOL Price</button>
+      <button onclick="buyToken()">Buy Token</button>
+      <button onclick="sellToken()">Sell Token</button>
+      <button onclick="checkBalance()">Check Balance</button>
+    </div>
+  </div>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    // Display user information
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+      document.getElementById('user-info').textContent =
+        `Hello, ${user.first_name} (@${user.username})`;
+    } else {
+      document.getElementById('user-info').textContent =
+        'Hello, valued user!';
+    }
+
+    // Example action functions
+    function getPrice() {
+      tg.sendData(JSON.stringify({ action: 'get_price' }));
+    }
+
+    function buyToken() {
+      tg.sendData(JSON.stringify({ action: 'buy_token' }));
+    }
+
+    function sellToken() {
+      tg.sendData(JSON.stringify({ action: 'sell_token' }));
+    }
+
+    function checkBalance() {
+      tg.sendData(JSON.stringify({ action: 'check_balance' }));
+    }
+  </script>
+</body>
+</html>
