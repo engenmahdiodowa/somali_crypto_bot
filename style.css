@@ -1,31 +1,154 @@
+/* Root Theme Colors from Telegram */
+:root {
+  --bg-color: var(--tg-theme-bg-color, #ffffff);
+  --text-color: var(--tg-theme-text-color, #000000);
+  --btn-bg: var(--tg-theme-button-color, #0088cc);
+  --btn-text: var(--tg-theme-button-text-color, #ffffff);
+  --card-bg: rgba(0, 0, 0, 0.03);
+  --btn-hover: rgba(0, 136, 204, 0.85);
+  --radius: 8px;
+  --toast-bg: #333;
+  --toast-error-bg: #e74c3c;
+  --toast-success-bg: #27ae60;
+}
+
+/* Reset and Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: var(--tg-theme-bg-color, #ffffff);
-    color: var(--tg-theme-text-color, #000000);
-    margin: 0;
-    padding: 20px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  padding: 20px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Heading */
+h1 {
+  margin-bottom: 15px;
+  font-size: 30px;
+  color: #00b894;
+}
+
+/* User Info */
+#user-info {
+  margin-bottom: 25px;
+  font-size: 18px;
+  color: #555;
+}
+
+/* Card-style Sections */
+.card {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--radius);
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+}
+
+/* Actions Buttons Grid */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.actions button {
+  padding: 14px;
+  font-size: 16px;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.actions button:hover {
+  background-color: var(--btn-hover);
+  transform: scale(1.03);
+}
+
+.actions button:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Toast Notification Styles */
+#toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+}
+
+.toast {
+  background-color: var(--toast-bg);
+  color: #fff;
+  padding: 14px 20px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+  min-width: 250px;
+  text-align: center;
+}
+
+.toast.hide {
+  opacity: 0;
+}
+
+.toast-error {
+  background-color: var(--toast-error-bg);
+}
+
+.toast-success {
+  background-color: var(--toast-success-bg);
+}
+
+/* Loading Indicator */
+.loading-indicator {
+  display: inline-block;
+  padding: 12px 24px;
+  margin-top: 30px;
+  background-color: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: var(--radius);
+  font-size: 1.2em;
+  font-weight: bold;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  animation: loading-pulse 1.5s infinite;
+}
+
+/* Loading pulse animation */
+@keyframes loading-pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 26px;
   }
-  
-  .container {
-    max-width: 600px;
-    margin: auto;
-    text-align: center;
+
+  .actions {
+    grid-template-columns: 1fr;
   }
-  
-  .actions button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    font-size: 16px;
-    background-color: var(--tg-theme-button-color, #0088cc);
-    color: var(--tg-theme-button-text-color, #ffffff);
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .actions button:hover {
-    opacity: 0.9;
-  }
-  
+}

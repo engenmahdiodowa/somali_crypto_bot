@@ -2,20 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Somali Crypto Bot Dashboard</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to Somali Crypto Bot</h1>
+    <h1>🚀 Somali Crypto Bot</h1>
     <p id="user-info">Loading user info...</p>
-    <div class="actions">
-      <button onclick="getPrice()">Check SOL Price</button>
-      <button onclick="buyToken()">Buy Token</button>
-      <button onclick="sellToken()">Sell Token</button>
-      <button onclick="checkBalance()">Check Balance</button>
+
+    <div class="card">
+      <h3>📖 Wallet Actions</h3>
+      <div class="actions">
+        <button onclick="getPrice()">📈 Check SOL Price</button>
+        <button onclick="buyToken()">🛒 Buy Token</button>
+        <button onclick="sellToken()">💸 Sell Token</button>
+        <button onclick="checkBalance()">🔍 Check Balance</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚡ Advanced Features</h3>
+      <div class="actions">
+        <button onclick="snipify()">🔪 Snipify</button>
+        <button onclick="copyTrade()">📋 CopyTrade</button>
+        <button onclick="limitOrders()">📉 Limit Orders</button>
+        <button onclick="autoBuy()">🤖 AutoBuy</button>
+        <button onclick="referrals()">👥 Referrals</button>
+        <button onclick="afk()">😴 AFK Mode</button>
+        <button onclick="positions()">📊 My Positions</button>
+        <button onclick="refresh()">🔄 Refresh Data</button>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <div id="loading-indicator" class="loading-indicator" style="display: none;">
+      Loading...
     </div>
   </div>
 
@@ -23,31 +46,129 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Display user information
     const user = tg.initDataUnsafe?.user;
+    const userInfoEl = document.getElementById("user-info");
     if (user) {
-      document.getElementById('user-info').textContent =
-        `Hello, ${user.first_name} (@${user.username})`;
+      userInfoEl.textContent = `Hello, ${user.first_name} (@${user.username})`;
     } else {
-      document.getElementById('user-info').textContent =
-        'Hello, valued user!';
+      userInfoEl.textContent = "Hello, valued user!";
     }
 
-    // Example action functions
+    function showToast(message, duration = 3000) {
+      const toast = document.createElement("div");
+      toast.className = "toast";
+      toast.textContent = message;
+      document.getElementById("toast-container").appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add("hide");
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
+
+    function showLoadingIndicator() {
+      document.getElementById("loading-indicator").style.display = "block";
+    }
+
+    function hideLoadingIndicator() {
+      document.getElementById("loading-indicator").style.display = "none";
+    }
+
+    function sendAction(action, data = null) {
+      tg.sendData(JSON.stringify({ action, value: data }));
+    }
+
     function getPrice() {
-      tg.sendData(JSON.stringify({ action: 'get_price' }));
+      showLoadingIndicator();
+      fetch("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd")
+        .then(res => res.json())
+        .then(data => {
+          const price = data.solana.usd;
+          showToast(`📈 SOL Price: $${price}`);
+          sendAction("get_price", price);
+        })
+        .catch(() => {
+          showToast("❌ Failed to fetch price");
+        })
+        .finally(() => {
+          hideLoadingIndicator();
+        });
     }
 
     function buyToken() {
-      tg.sendData(JSON.stringify({ action: 'buy_token' }));
+      showLoadingIndicator();
+      sendAction("buy_token");
+      showToast("🛒 Buy request sent");
+      hideLoadingIndicator();
     }
 
     function sellToken() {
-      tg.sendData(JSON.stringify({ action: 'sell_token' }));
+      showLoadingIndicator();
+      sendAction("sell_token");
+      showToast("💸 Sell request sent");
+      hideLoadingIndicator();
     }
 
     function checkBalance() {
-      tg.sendData(JSON.stringify({ action: 'check_balance' }));
+      showLoadingIndicator();
+      sendAction("check_balance");
+      showToast("🔍 Balance check triggered");
+      hideLoadingIndicator();
+    }
+
+    function snipify() {
+      showLoadingIndicator();
+      sendAction("snipify");
+      showToast("🔪 Snipify mode activated");
+      hideLoadingIndicator();
+    }
+
+    function copyTrade() {
+      showLoadingIndicator();
+      sendAction("copytrade");
+      showToast("📋 CopyTrade enabled");
+      hideLoadingIndicator();
+    }
+
+    function limitOrders() {
+      showLoadingIndicator();
+      sendAction("limit_orders");
+      showToast("📉 Managing Limit Orders");
+      hideLoadingIndicator();
+    }
+
+    function autoBuy() {
+      showLoadingIndicator();
+      sendAction("autobuy");
+      showToast("🤖 AutoBuy strategy triggered");
+      hideLoadingIndicator();
+    }
+
+    function referrals() {
+      showLoadingIndicator();
+      sendAction("referrals");
+      showToast("👥 Viewing Referrals");
+      hideLoadingIndicator();
+    }
+
+    function afk() {
+      showLoadingIndicator();
+      sendAction("afk");
+      showToast("😴 AFK Mode set");
+      hideLoadingIndicator();
+    }
+
+    function positions() {
+      showLoadingIndicator();
+      sendAction("positions");
+      showToast("📊 Checking Positions");
+      hideLoadingIndicator();
+    }
+
+    function refresh() {
+      showLoadingIndicator();
+      sendAction("refresh");
+      showToast("🔄 Data refreshed");
+      hideLoadingIndicator();
     }
   </script>
 </body>

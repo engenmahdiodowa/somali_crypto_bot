@@ -1,0 +1,35 @@
+# grok.yml
+name: telegram-crypto-bot
+region: us-east # Change this to the region you want to deploy to
+services:
+  - name: telegram-bot-service
+    image: your-username/crypto-bot:latest # Docker image for the bot
+    ports:
+      - 8080:8080 # Expose port 8080 inside and outside the container
+    environment:
+      TELEGRAM_TOKEN: "@EngrMMOme:AAH11Q_ANx918VWvoPdVYxZNquIF-j8PmK8"
+      SOLANA_RPC_URL: "https://api.mainnet-beta.solana.com"
+      TZ: "America/New_York"
+    scaling:
+      min_instances: 1
+      max_instances: 5 # Auto-scaling between 1 and 5 instances depending on traffic
+    healthcheck:
+      path: /health # A simple health check route to monitor the service
+      interval: 30s # Check every 30 seconds
+      timeout: 10s # Timeout for health check request
+      retries: 3 # Number of retries before considering the service unhealthy
+    logs:
+      type: stdout
+      level: info # Adjust logging level as needed
+
+  # You can add more services if needed
+  # - name: another-service
+  #   image: another-image
+  #   ...
+
+# Optional: Define the global environment or network settings
+environment:
+  global:
+    NODE_ENV: "production"
+  secrets:
+    TELEGRAM_TOKEN: "@EngrMMOme:AAH11Q_ANx918VWvoPdVYxZNquIF-j8PmK8"
